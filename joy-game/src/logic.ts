@@ -2,7 +2,7 @@ import type {RuneClient} from "rune-games-sdk/multiplayer"
 // import {Simulate} from "react-dom/test-utils";
 // import play = Simulate.play;
 
-import type { PlayerId} from "rune-games-sdk/multiplayer";
+//import type { PlayerId} from "rune-games-sdk/multiplayer";
 
 const startingDiceCount = 5
 interface isGameOver {
@@ -17,7 +17,7 @@ const isGameOver = (game: GameState): boolean => {
 
 const getScores = (game: any): Record<string, string> => {
   return Object.entries(game.diceCount).reduce((acc, [playerId, score]) => {
-    const winLoss = score <= 0 ? "WON" : "LOST";
+    const winLoss = score as number <= 0 ? "WON" : "LOST"; // Specify 'score' as 'number'
     acc[playerId] = winLoss;
     return acc;
   }, {} as Record<string, string>);
@@ -28,7 +28,7 @@ export interface GameState {
   diceCount:Record<string, number>,
   currentPlayerIndex: number,
   playerToRoll: true,
-  playerPlaying: false,
+  //playerPlaying: false,
   gameOver: boolean
 }
 
@@ -90,7 +90,7 @@ Rune.initLogic({
       diceCount,
       currentPlayerIndex:0,
       playerToRoll: true,
-      playerPlaying: true,
+      //playerPlaying: true,
       gameOver: false
     }
   },

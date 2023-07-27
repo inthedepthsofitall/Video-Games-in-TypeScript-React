@@ -29,7 +29,7 @@ function App() {
 
   return (
     <>
-      <GameZone game={game} players={players} yourPlayerId={yourPlayerId} numPlayers={0} playerIds={[]} avatarUrl={""}/>
+      <GameZone game={game} players={players} yourPlayerId={yourPlayerId} playerIds={[]} avatarUrl={""}/>
 
       {/* <div className="card">
 

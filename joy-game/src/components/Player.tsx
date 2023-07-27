@@ -2,7 +2,7 @@ import './GameZone.css'
 
 import React from 'react';
 import './Player.css'
-import {motion} from "framer-motion";
+//import {motion} from "framer-motion";
 import {GameState} from "../logic.ts";
 
 
@@ -11,6 +11,7 @@ interface PlayerProps {
     playerId: string;
     game: GameState,
     playerNum: number
+    
 }
 
 const Player: React.FC<PlayerProps> = ({ game: game, players, playerId, playerNum }) => {

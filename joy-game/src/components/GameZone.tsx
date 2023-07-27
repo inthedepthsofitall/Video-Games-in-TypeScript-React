@@ -8,7 +8,7 @@ import Table from "./Table.tsx";
 import Player from "./Player.tsx";
 
 interface GameZoneProps {
-    numPlayers: number,
+    //numPlayers: number,
     playerIds: string[],
     game: GameState,
     players: Record<string, { playerId: string, displayName: string, avatarUrl: string }>,
@@ -41,7 +41,7 @@ const GameZone: React.FC<GameZoneProps> = ({game: game, players: players, yourPl
                     <motion.div className="players" transition={{ duration: 1 }} animate={{x:0}} initial={{x:-150}} >
                     {numPlayers > 0 ? (
 
-                        <Player playerId={playerIds[0]} players={players} game={game} playerNum={1} numPlayers={numPlayers}/>
+                        <Player playerId={playerIds[0]} players={players} game={game} playerNum={1}/>
 
 
                                 
@@ -58,7 +58,7 @@ const GameZone: React.FC<GameZoneProps> = ({game: game, players: players, yourPl
                     <motion.div className="players"  transition={{ duration: 1 }} animate={{x:0}} initial={{x:150}} >
                         {numPlayers > 1 ? (
 
-                            <Player playerId={playerIds[1]} players={players} game={game} playerNum={2} numPlayers={numPlayers}/>
+                            <Player playerId={playerIds[1]} players={players} game={game} playerNum={2} />
 
                         ) : (
                             <div className='player-2-name player-flex'>
@@ -86,7 +86,7 @@ const GameZone: React.FC<GameZoneProps> = ({game: game, players: players, yourPl
                     <motion.div className="players"   transition={{ duration: 1 }} animate={{x:0}} initial={{x:-150}}>
                     {numPlayers > 3 ? (
 
-                        <Player playerId={playerIds[3]} players={players} game={game} playerNum={4} numPlayers={numPlayers} />
+                        <Player playerId={playerIds[3]} players={players} game={game} playerNum={4}/>
 
                     ) : (
                                <div className='player-flex player-4-name'>
@@ -107,7 +107,7 @@ const GameZone: React.FC<GameZoneProps> = ({game: game, players: players, yourPl
 
                     {numPlayers > 2 ? (
 
-                        <Player playerId={playerIds[2]} players={players} game={game} playerNum={3} numPlayers={numPlayers} />
+                        <Player playerId={playerIds[2]} players={players} game={game} playerNum={3} />
 
                     ) : (
                         <div className=" player-flex player-3-name ">
