@@ -16,6 +16,7 @@ Then start the develpment build and run it on your local web browser using:
 
 Follow the provided link using control+click or command+click to open the project locally
 
+`npm install -g rune-games-cli@latest` before sending it to upload on rune
 
 
 # Three projects:

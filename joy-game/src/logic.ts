@@ -15,12 +15,12 @@ const isGameOver = (game: GameState): boolean => {
   return Object.values(game.diceCount).some((player: any) => player <= 0);
 };
 
-const getScores = (game: any): Record<string, string> => {
+const getScores = (game: GameState): { [playerId: string]: number | "WON" | "LOST" } => {
   return Object.entries(game.diceCount).reduce((acc, [playerId, score]) => {
-    const winLoss = score as number <= 0 ? "WON" : "LOST"; // Specify 'score' as 'number'
+    const winLoss = score as number <= 0 ? "WON" : "LOST";
     acc[playerId] = winLoss;
     return acc;
-  }, {} as Record<string, string>);
+  }, {} as { [playerId: string]: number | "WON" | "LOST" });
 };
 
 export interface GameState {
@@ -51,17 +51,17 @@ type GameActions = {
   // }) => void
 }
 
-const countOccurrences = ( array: number[], compare: number) => {
-  let count = 0;
-  for (let i = 0; i < array.length; i++) {
-    if (array[i] === compare) {
-      count += 1;
-    }
-  }
-  console.log("Number of occurances of ", compare, ": ", count)
+// const countOccurrences = ( array: number[], compare: number) => {
+//   let count = 0;
+//   for (let i = 0; i < array.length; i++) {
+//     if (array[i] === compare) {
+//       count += 1;
+//     }
+//   }
+//   //console.log("Number of occurances of ", compare, ": ", count)
 
-  return count;
-}
+//   return count;
+// }
 
 declare global {
   const Rune: RuneClient<GameState, GameActions>
@@ -101,13 +101,13 @@ Rune.initLogic({
       if (game.diceCount[playerId] === undefined) {
         throw Rune.invalidAction(); // incorrect playerId passed to the action
       }
-      console.log("updating dice count:", playerId, amount)
+      //console.log("updating dice count:", playerId, amount)
       game.diceCount[playerId] += amount;
 
       //game over if 1 or more players has 0 dice after adjusting
       //this can be moved to an 'end turn' action / button so it doesn't happen automatically
       const gameOver = isGameOver(game)
-      console.log("Is game over? ", gameOver)
+      //console.log("Is game over? ", gameOver)
 
       if (gameOver) {
         Rune.gameOver({
@@ -120,8 +120,8 @@ Rune.initLogic({
       // Game checks can happen here
 
       //check for fives
-      const fives = countOccurrences(game.gameDice, 5);
-      console.log("num fives", fives)
+      //const fives = countOccurrences(game.gameDice, 5);
+      //console.log("num fives", fives)
       // if (fives > 0) {
       //   floatAwayFives({fivesCount: fives, playerId: playerId})
       // }
