@@ -2,7 +2,7 @@ import type {RuneClient} from "rune-games-sdk/multiplayer"
 // import {Simulate} from "react-dom/test-utils";
 // import play = Simulate.play;
 
-import type { PlayerId} from "rune-games-sdk/multiplayer";
+// import type { PlayerId} from "rune-games-sdk/multiplayer";
 
 const startingDiceCount = 5
 interface isGameOver {
@@ -15,12 +15,12 @@ const isGameOver = (game: GameState): boolean => {
   return Object.values(game.diceCount).some((player: any) => player <= 0);
 };
 
-const getScores = (game: any): Record<string, string> => {
+const getScores = (game: GameState): { [playerId: string]: number | "WON" | "LOST" } => {
   return Object.entries(game.diceCount).reduce((acc, [playerId, score]) => {
-    const winLoss = score <= 0 ? "WON" : "LOST";
+    const winLoss = score as number <= 0 ? "WON" : "LOST";
     acc[playerId] = winLoss;
     return acc;
-  }, {} as Record<string, string>);
+  }, {} as { [playerId: string]: number | "WON" | "LOST" });
 };
 
 export interface GameState {
