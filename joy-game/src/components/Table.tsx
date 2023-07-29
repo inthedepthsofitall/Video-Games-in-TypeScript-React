@@ -66,11 +66,69 @@
 // export default Table;
 
 
-import { motion } from "framer-motion";
-import Dice from "./Dice.tsx";
-import React from "react";
-import { GameState } from "../logic.ts";
-import "./Table.css"
+// import { motion } from "framer-motion";
+// import Dice from "./Dice.tsx";
+// import React from "react";
+// import { GameState } from "../logic.ts";
+// import "./Table.css"
+
+// interface TableProps {
+//   game: GameState;
+//   playerId: string | undefined;
+//   playerIds: (string | undefined)[];
+//   yourPlayerId: string | undefined;
+// }
+
+// const Table: React.FC<TableProps> = ({ game, playerId, playerIds }) => {
+//   const currentPlayerId = playerIds.indexOf(playerId);
+
+//   const handleDiceClick = (faceValue: number, playerId: string | undefined, i: number, playerIds: (string | undefined)[]) => {
+//       //Trying to disable clicks by player
+//       if (game.currentPlayerIndex !== playerIds.indexOf(playerId)) {
+//           return
+//       }
+       
+
+//         if (faceValue === 5 ) {
+//             Rune.actions.updateDiceCount({playerId: playerId, amount: -1})
+//             Rune.actions.adjustGameDice({index: i})
+//         } else if (faceValue === 6){
+//             const nextPlayerId = playerIds[(currentPlayerId + 1) % Object.keys(playerIds).length];
+//            // console.log(playerId)
+//            // console.log([nextPlayerId])
+//             Rune.actions.updateDiceCount({playerId: nextPlayerId, amount: 1})
+//             Rune.actions.updateDiceCount({playerId: playerId, amount: -1})
+//             Rune.actions.adjustGameDice({index: i})
+//         }
+
+//     }
+
+//     return (
+//         <div className='middle-section'>
+//           <div className='dice-container'>
+//             {game.gameDice.map((die, i) => (
+//                 //moved motion animation inside dice component, cleans up code and functions the same
+//                 <button
+//                 onClick={() => handleDiceClick(die, playerId, i, playerIds)}
+//                 className='dice-button'
+//                 key={i}
+//               >
+//                 <Dice faceValue={die} />
+
+//                 </button>
+
+//             ))}
+//           </div>
+//         </div>
+//       );
+//     }
+    
+//     export default Table;
+
+import React, { useState, useEffect } from 'react';
+import Dice from './Dice.tsx';
+import { GameState } from '../logic.ts';
+import './Table.css';
 
 interface TableProps {
   game: GameState;
@@ -79,48 +137,64 @@ interface TableProps {
   yourPlayerId: string | undefined;
 }
 
-const Table: React.FC<TableProps> = ({ game, playerId, playerIds }) => {
+const Table: React.FC<TableProps> = ({ game, playerId, playerIds, yourPlayerId }) => {
   const currentPlayerId = playerIds.indexOf(playerId);
+  const [rolling, setRolling] = useState(false);
 
   const handleDiceClick = (faceValue: number, playerId: string | undefined, i: number, playerIds: (string | undefined)[]) => {
-      //Trying to disable clicks by player
-      if (game.currentPlayerIndex !== playerIds.indexOf(playerId)) {
-          return
-      }
-       
-
-        if (faceValue === 5 ) {
-            Rune.actions.updateDiceCount({playerId: playerId, amount: -1})
-            Rune.actions.adjustGameDice({index: i})
-        } else if (faceValue === 6){
-            const nextPlayerId = playerIds[(currentPlayerId + 1) % Object.keys(playerIds).length];
-           // console.log(playerId)
-           // console.log([nextPlayerId])
-            Rune.actions.updateDiceCount({playerId: nextPlayerId, amount: 1})
-            Rune.actions.updateDiceCount({playerId: playerId, amount: -1})
-            Rune.actions.adjustGameDice({index: i})
-        }
-
+    if (game.currentPlayerIndex !== playerIds.indexOf(playerId)) {
+      return;
     }
 
-    return (
-        <div className='middle-section'>
-          <div className='dice-container'>
-            {game.gameDice.map((die, i) => (
-                //moved motion animation inside dice component, cleans up code and functions the same
-                <button
-                onClick={() => handleDiceClick(die, playerId, i, playerIds)}
-                className='dice-button'
-                key={i}
-              >
-                <Dice faceValue={die} />
-
-                </button>
-
-            ))}
-          </div>
-        </div>
-      );
+    if (faceValue === 5) {
+      Rune.actions.updateDiceCount({ playerId: playerId, amount: -1 });
+      Rune.actions.adjustGameDice({ index: i });
+    } else if (faceValue === 6) {
+      const nextPlayerId = playerIds[(currentPlayerId + 1) % Object.keys(playerIds).length];
+      Rune.actions.updateDiceCount({ playerId: nextPlayerId, amount: 1 });
+      Rune.actions.updateDiceCount({ playerId: playerId, amount: -1 });
+      Rune.actions.adjustGameDice({ index: i });
     }
-    
-    export default Table;
+  };
+
+  useEffect(() => {
+    if (rolling) {
+      const interval = setInterval(() => {
+        const randomDice = Array.from({ length: game.gameDice.length }, () => Math.floor(Math.random() * 6) + 1);
+        Rune.actions.rollDice({ numDice: randomDice });
+      }, 150);
+      setTimeout(() => {
+        clearInterval(interval);
+        setRolling(false);
+      }, 1500);
+    }
+  }, [rolling, game.gameDice]);
+
+  const handleRollDice = () => {
+    if (game.playerToRoll && game.currentPlayerIndex === playerIds.indexOf(yourPlayerId)) {
+      setRolling(true);
+    }
+  };
+
+  return (
+    <div className="middle-section">
+      <div className="dice-container">
+        {game.gameDice.map((die, i) => (
+          <button
+            onClick={() => handleDiceClick(die, playerId, i, playerIds)}
+            className="dice-button"
+            key={i}
+            disabled={!game.playerToRoll || game.currentPlayerIndex !== playerIds.indexOf(yourPlayerId)}
+          >
+            <Dice faceValue={die} />
+          </button>
+        ))}
+      </div>
+      <button className="roll-button" onClick={handleRollDice} disabled={!game.playerToRoll || game.currentPlayerIndex !== playerIds.indexOf(yourPlayerId)}>
+        Roll dice!
+      </button>
+    </div>
+  );
+};
+
+export default Table;
