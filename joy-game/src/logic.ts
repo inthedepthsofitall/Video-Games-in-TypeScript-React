@@ -38,7 +38,7 @@ type GameActions = {
     amount: number
   }) => void,
   rollDice: (params: {
-    numDice: number
+    numDice: number[]
   }) => void,
   nextPlayer: (params: {
     nextIndex: number
