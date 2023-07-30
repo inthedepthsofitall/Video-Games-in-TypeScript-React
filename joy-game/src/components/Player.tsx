@@ -3,7 +3,7 @@ import React from 'react';
 import './Player.css';
 import { GameState } from '../logic.ts';
 import {motion} from "framer-motion";
-import partying from "../assets/partying.gif"
+//import partying from "../assets/partying.gif"
 // import splat from "../assets/pngs/splat.png"
 
 interface PlayerProps {

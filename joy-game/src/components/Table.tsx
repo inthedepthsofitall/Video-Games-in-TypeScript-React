@@ -7,8 +7,8 @@ import pop from  "../assets/sounds/pop.mp3"
 import "./Table.css"
 import { motion } from "framer-motion";
 
-import {Simulate} from "react-dom/test-utils";
-import play = Simulate.play;
+//import {Simulate} from "react-dom/test-utils";
+//import play = Simulate.play;
 import {useState} from "react";
 import SelectPlayer from "./SelectPlayer.tsx";
 
